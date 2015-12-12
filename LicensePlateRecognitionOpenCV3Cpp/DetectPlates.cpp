@@ -44,7 +44,13 @@ std::vector<PossiblePlate> detectPlatesInScene(cv::Mat imgOriginalScene) {
 		cv::imshow("2b", imgContours);
 	}
 
+	int64 begTickCount = cv::getTickCount();				// debug !!!!!!!!!!!!!!!!!!
+
 	std::vector<std::vector<PossibleChar> > vectorOfVectorsOfMatchingCharsInScene = findVectorOfVectorsOfMatchingChars(vectorOfPossibleCharsInScene);
+
+	int64 endTickCount = cv::getTickCount();				// debug !!!!!!!!!!!!!!!!!!
+
+	std::cout << "function took " << (endTickCount - begTickCount) / cv::getTickFrequency() << " seconds" << std::endl << std::endl;		// debug !!!!!!!!!!!!!!!!!!
 
 	if (blnShowSteps) {
 		std::cout << "step 3 - listOfListsOfMatchingCharsInScene.Count = " << vectorOfVectorsOfMatchingCharsInScene.size() << std::endl;			// 13 with MCLRNF1 image

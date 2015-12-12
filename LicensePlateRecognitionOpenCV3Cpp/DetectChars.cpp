@@ -244,7 +244,7 @@ std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(std::
 		if (vectorOfMatchingChars.size() < MIN_NUMBER_OF_MATCHING_CHARS) {
 			continue;
 		}
-		// if we get here, the current list passed test as a "group" or "cluster" of matching chars
+					// if we get here, the current list passed test as a "group" or "cluster" of matching chars
 		vectorOfVectorOfMatchingChars.push_back(vectorOfMatchingChars);			// so add to our list of lists of matching chars
 
 		std::vector<PossibleChar> vectorOfPossibleCharsWithCurrentMatchesRemoved;
@@ -280,9 +280,9 @@ std::vector<PossibleChar> findVectorOfMatchingChars(PossibleChar possibleChar, s
 
 		double dblDistanceBetweenChars = distanceBetweenChars(possibleChar, *possibleMatchingChar);
 		double dblAngleBetweenChars = angleBetweenChars(possibleChar, *possibleMatchingChar);
-		double dblChangeInArea = abs(possibleMatchingChar->boundingRect.area() - possibleChar.boundingRect.area()) / possibleChar.boundingRect.area();
-		double dblChangeInWidth = abs(possibleMatchingChar->boundingRect.width - possibleChar.boundingRect.width) / possibleChar.boundingRect.width;
-		double dblChangeInHeight = abs(possibleMatchingChar->boundingRect.height - possibleChar.boundingRect.height) / possibleChar.boundingRect.height;
+		double dblChangeInArea = (double)abs(possibleMatchingChar->boundingRect.area() - possibleChar.boundingRect.area()) / (double)possibleChar.boundingRect.area();
+		double dblChangeInWidth = (double)abs(possibleMatchingChar->boundingRect.width - possibleChar.boundingRect.width) / (double)possibleChar.boundingRect.width;
+		double dblChangeInHeight = (double)abs(possibleMatchingChar->boundingRect.height - possibleChar.boundingRect.height) / (double)possibleChar.boundingRect.height;
 
 		if (dblDistanceBetweenChars < (possibleChar.dblDiagonalSize * MAX_DIAG_SIZE_MULTIPLE_AWAY) &&
 			dblAngleBetweenChars < MAX_ANGLE_BETWEEN_CHARS &&
@@ -322,7 +322,7 @@ std::vector<PossibleChar> removeInnerOverlappingChars(std::vector<PossibleChar> 
 
 	for (auto currentChar = vectorOfMatchingChars.begin(); currentChar != vectorOfMatchingChars.end(); currentChar++) {
 		for (auto otherChar = vectorOfMatchingChars.begin(); otherChar != vectorOfMatchingChars.end(); otherChar++) {
-			if (!(currentChar == otherChar)) {
+			if (currentChar != otherChar) {
 				if (distanceBetweenChars(*currentChar, *otherChar) < (currentChar->dblDiagonalSize * MIN_DIAG_SIZE_MULTIPLE_AWAY)) {
 					if (currentChar->boundingRect.area() < otherChar->boundingRect.area()) {
 						std::vector<PossibleChar>::iterator currentCharIterator = std::find(vectorOfMatchingCharsWithInnerCharRemoved.begin(), vectorOfMatchingCharsWithInnerCharRemoved.end(), *currentChar);

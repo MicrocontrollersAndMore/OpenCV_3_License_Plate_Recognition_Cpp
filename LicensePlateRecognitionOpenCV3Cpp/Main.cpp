@@ -98,22 +98,22 @@ void writeLicensePlateCharsOnImage(cv::Mat imgOriginalScene, PossiblePlate licPl
 	cv::Point ptLowerLeftTextOrigin;
 
 	int intFontFace = CV_FONT_HERSHEY_SIMPLEX;
-	double dblFontScale = licPlate.imgPlate.rows / 30;
-	int intFontThickness = (int)(dblFontScale * 1.5);
-	int intBaseline;
-
+	double dblFontScale = (double)licPlate.imgPlate.rows / 30.0;
+	int intFontThickness = std::round(dblFontScale * 1.5);
+	int intBaseline = 0;
+	
 	cv::Size textSize = cv::getTextSize(licPlate.strChars, intFontFace, dblFontScale, intFontThickness, &intBaseline);
 
 	ptCenterOfTextArea.x = (int)licPlate.rrLocationOfPlateInScene.center.x;
 	
 	if (licPlate.rrLocationOfPlateInScene.center.y < (imgOriginalScene.rows * 0.75)) {
-		ptCenterOfTextArea.y = (int)(licPlate.rrLocationOfPlateInScene.center.y) + (int)((double)licPlate.imgPlate.rows * 1.6);
+		ptCenterOfTextArea.y = std::round(licPlate.rrLocationOfPlateInScene.center.y) + std::round((double)licPlate.imgPlate.rows * 1.6);
 	} else {
-		ptCenterOfTextArea.y = (int)(licPlate.rrLocationOfPlateInScene.center.y) - (int)((double)licPlate.imgPlate.rows * 1.6);
+		ptCenterOfTextArea.y = std::round(licPlate.rrLocationOfPlateInScene.center.y) - std::round((double)licPlate.imgPlate.rows * 1.6);
 	}
 
 	ptLowerLeftTextOrigin.x = (int)(ptCenterOfTextArea.x - (textSize.width / 2));
-	ptLowerLeftTextOrigin.y = (int)(ptCenterOfTextArea.y - (textSize.height / 2));
+	ptLowerLeftTextOrigin.y = (int)(ptCenterOfTextArea.y + (textSize.height / 2));
 
 	cv::putText(imgOriginalScene, licPlate.strChars, ptLowerLeftTextOrigin, intFontFace, dblFontScale, SCALAR_YELLOW, intFontThickness);
 }
