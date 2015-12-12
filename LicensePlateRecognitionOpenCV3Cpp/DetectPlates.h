@@ -1,7 +1,7 @@
 // DetectPlates.h
 
-#ifndef DETECTPLATES_H
-#define DETECTPLATES_H
+#ifndef DETECT_PLATES_H
+#define DETECT_PLATES_H
 
 #include<opencv2/core/core.hpp>
 #include<opencv2/highgui/highgui.hpp>
@@ -13,8 +13,10 @@
 #include "DetectChars.h"
 
 // global constants ///////////////////////////////////////////////////////////////////////////////
-const double PLATE_WIDTH_PADDING_FACTOR = 1.5;
-const double PLATE_HEIGHT_PADDING_FACTOR = 1.65;
+const double PLATE_WIDTH_PADDING_FACTOR = 1.3;
+const double PLATE_HEIGHT_PADDING_FACTOR = 1.5;
+
+const cv::Scalar SCALAR_RED = cv::Scalar(0.0, 0.0, 255.0);
 
 // external global variables //////////////////////////////////////////////////////////////////////
 extern bool blnShowSteps;
@@ -27,6 +29,5 @@ std::vector<PossibleChar> findPossibleCharsInScene(cv::Mat imgThresh);
 PossiblePlate extractPlate(cv::Mat imgOriginal, std::vector<PossibleChar> vectorOfMatchingChars);
 
 
-# endif	// DETECTPLATES_H
-
+# endif	// DETECT_PLATES_H
 

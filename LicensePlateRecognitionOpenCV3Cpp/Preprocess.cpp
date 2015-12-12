@@ -54,4 +54,3 @@ cv::Mat maximizeContrast(cv::Mat imgGrayscale) {
 
 
 
-

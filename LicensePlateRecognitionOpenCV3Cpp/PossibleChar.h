@@ -21,8 +21,6 @@ public:
 	double dblDiagonalSize;
 	double dblAspectRatio;
 
-	int intRectArea;
-
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	static bool sortCharsLeftToRight(const PossibleChar &pcLeft, const PossibleChar & pcRight) {
 		return(pcLeft.intCenterX < pcRight.intCenterX);
@@ -34,13 +32,17 @@ public:
 		else return false;
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	bool operator != (const PossibleChar& otherPossibleChar) const {
+		if (this->contour != otherPossibleChar.contour) return true;
+		else return false;
+	}
+
 	// function prototypes ////////////////////////////////////////////////////////////////////////
 	PossibleChar(std::vector<cv::Point> _contour);
-
 
 };
 
 #endif	// POSSIBLE_CHAR_H
-
 
 

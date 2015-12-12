@@ -25,9 +25,8 @@ public:
 	static bool sortDescendingByNumberOfChars(const PossiblePlate &ppLeft, const PossiblePlate &ppRight) {
 		return(ppLeft.strChars.length() > ppRight.strChars.length());
 	}
-	
+
 };
 
 #endif		// end #ifndef POSSIBLE_PLATE_H
-
 

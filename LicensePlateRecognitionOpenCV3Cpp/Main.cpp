@@ -13,11 +13,24 @@
 // global variables ///////////////////////////////////////////////////////////////////////////////
 bool blnShowSteps = true;
 
+// global constants ///////////////////////////////////////////////////////////////////////////////
+const cv::Scalar SCALAR_YELLOW = cv::Scalar(0.0, 255.0, 255.0);
+
+// function prototypes ////////////////////////////////////////////////////////////////////////////
+void drawRedRectangleAroundPlate(cv::Mat &imgOriginalScene, PossiblePlate licPlate);
+void writeLicensePlateCharsOnImage(cv::Mat imgOriginalScene, PossiblePlate licPlate);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 int main() {
+	bool blnKNNTrainingSuccessful = loadKNNDataAndTrainKNN();
+
+	if (blnKNNTrainingSuccessful == false) {
+		std::cout << std::endl << std::endl << "error: error: KNN traning was not successful" << std::endl << std::endl;
+		return(0);
+	}
 
 	cv::Mat imgOriginalScene;		// input image
-	
+
 	imgOriginalScene = cv::imread("1.png");			// open image
 
 	if (imgOriginalScene.empty()) {									// if unable to open image
@@ -27,19 +40,12 @@ int main() {
 
 	std::vector<PossiblePlate> vectorOfPossiblePlates = detectPlatesInScene(imgOriginalScene);
 
-	bool blnKNNTrainingSuccessful = loadKNNDataAndTrainKNN();
-
-	if (blnKNNTrainingSuccessful == false) {
-		std::cout << std::endl << std::endl << "error: error: KNN traning was not successful" << std::endl << std::endl;
-		return(0);
-	}
-
 	vectorOfPossiblePlates = detectCharsInPlates(vectorOfPossiblePlates);
 
 	cv::imshow("imgOriginalScene", imgOriginalScene);			// show original image
 
 	if (vectorOfPossiblePlates.empty()) {
-		//
+		std::cout << std::endl << "no license plates were detected" << std::endl;
 	} else {
 				// if we get in here vector of possible plates has at leat one plate
 
@@ -52,41 +58,67 @@ int main() {
 
 		cv::imshow("imgPlate", licPlate.imgPlate);
 		cv::imshow("imgThresh", licPlate.imgThresh);
-		cv::imwrite("imgThresh.png", licPlate.imgThresh);
 
 		if (licPlate.strChars.length() == 0) {
 			std::cout << std::endl << "no characters were detected" << std::endl << std::endl;
+			return(0);
 		}
 
-		cv::Point2f p2fRectPoints[4];
-		
-		licPlate.rrLocationOfPlateInScene.points(p2fRectPoints);
-
-		for (int i = 0; i < 4; i++) {
-			cv::line(imgOriginalScene, p2fRectPoints[i], p2fRectPoints[(i + 1) % 4], cv::Scalar(0, 0, 255), 2);
-		}
+		drawRedRectangleAroundPlate(imgOriginalScene, licPlate);
 
 		std::cout << std::endl << "license plate read from image = " << licPlate.strChars << std::endl;
-		std::cout << "-----------------------------------------" << std::endl;
+		std::cout << std::endl << "-----------------------------------------" << std::endl;
 
-		std::string strText = "example text";
-		int intFontFace = cv::FONT_HERSHEY_SCRIPT_SIMPLEX;
-		double dblFontScale = 2;
-		int intFontThickness = 3;
+		writeLicensePlateCharsOnImage(imgOriginalScene, licPlate);
 
-		cv::Point ptTextOrigin;
+		cv::imshow("imgOriginalScene", imgOriginalScene);
 
-		cv::Size textSize = cv::getTextSize(licPlate.strChars, intFontFace, dblFontScale, intFontThickness, 0);
-
-		ptTextOrigin.x = (imgOriginalScene.cols - textSize.width) / 2;
-		ptTextOrigin.y = (imgOriginalScene.rows + textSize.height) / 2;
-
-		cv::putText(imgOriginalScene, strText, ptTextOrigin, intFontFace, dblFontScale, cv::Scalar(0, 255, 255), intFontThickness);
-
+		cv::imwrite("imgOriginalScene.png", imgOriginalScene);
 	}
 
 	cv::waitKey(0);					// hold windows open until user presses a key
 
 	return(0);
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void drawRedRectangleAroundPlate(cv::Mat &imgOriginalScene, PossiblePlate licPlate) {
+	cv::Point2f p2fRectPoints[4];
+
+	licPlate.rrLocationOfPlateInScene.points(p2fRectPoints);
+
+	for (int i = 0; i < 4; i++) {
+		cv::line(imgOriginalScene, p2fRectPoints[i], p2fRectPoints[(i + 1) % 4], SCALAR_RED, 2);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+void writeLicensePlateCharsOnImage(cv::Mat imgOriginalScene, PossiblePlate licPlate) {
+	cv::Point ptCenterOfTextArea;
+	cv::Point ptLowerLeftTextOrigin;
+
+	int intFontFace = CV_FONT_HERSHEY_SIMPLEX;
+	double dblFontScale = licPlate.imgPlate.rows / 30;
+	int intFontThickness = (int)(dblFontScale * 1.5);
+	int intBaseline;
+
+	cv::Size textSize = cv::getTextSize(licPlate.strChars, intFontFace, dblFontScale, intFontThickness, &intBaseline);
+
+	ptCenterOfTextArea.x = (int)licPlate.rrLocationOfPlateInScene.center.x;
+	
+	if (licPlate.rrLocationOfPlateInScene.center.y < (imgOriginalScene.rows * 0.75)) {
+		ptCenterOfTextArea.y = (int)(licPlate.rrLocationOfPlateInScene.center.y) + (int)((double)licPlate.imgPlate.rows * 1.6);
+	} else {
+		ptCenterOfTextArea.y = (int)(licPlate.rrLocationOfPlateInScene.center.y) - (int)((double)licPlate.imgPlate.rows * 1.6);
+	}
+
+	ptLowerLeftTextOrigin.x = (int)(ptCenterOfTextArea.x - (textSize.width / 2));
+	ptLowerLeftTextOrigin.y = (int)(ptCenterOfTextArea.y - (textSize.height / 2));
+
+	cv::putText(imgOriginalScene, licPlate.strChars, ptLowerLeftTextOrigin, intFontFace, dblFontScale, SCALAR_YELLOW, intFontThickness);
+}
+
+
+
+
 

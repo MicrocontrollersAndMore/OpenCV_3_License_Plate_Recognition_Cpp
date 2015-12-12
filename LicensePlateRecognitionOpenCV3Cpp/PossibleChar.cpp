@@ -18,7 +18,5 @@ PossibleChar::PossibleChar(std::vector<cv::Point> _contour) {
 	dblDiagonalSize = sqrt(pow(boundingRect.width, 2) + pow(boundingRect.height, 2));
 
 	dblAspectRatio = (float)boundingRect.width / (float)boundingRect.height;
-
-	intRectArea = boundingRect.width * boundingRect.height;
 }
 
