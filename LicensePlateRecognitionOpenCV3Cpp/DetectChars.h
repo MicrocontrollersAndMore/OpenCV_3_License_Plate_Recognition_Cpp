@@ -73,4 +73,3 @@ std::string recognizeCharsInPlate(cv::Mat &imgThresh, std::vector<PossibleChar> 
 
 
 #endif	// DETECT_CHARS_H
-

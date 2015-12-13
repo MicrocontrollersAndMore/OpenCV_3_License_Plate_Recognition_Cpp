@@ -37,8 +37,8 @@ std::vector<PossiblePlate> detectPlatesInScene(cv::Mat &imgOriginalScene) {
 
 		std::vector<std::vector<cv::Point> > contours;
 
-		for (auto possibleChar = vectorOfPossibleCharsInScene.begin(); possibleChar != vectorOfPossibleCharsInScene.end(); possibleChar++) {
-			contours.push_back(possibleChar->contour);
+		for (auto &possibleChar : vectorOfPossibleCharsInScene) {
+			contours.push_back(possibleChar.contour);
 		}
 		cv::drawContours(imgContours, contours, -1, SCALAR_WHITE);
 		cv::imshow("2b", imgContours);
@@ -54,26 +54,26 @@ std::vector<PossiblePlate> detectPlatesInScene(cv::Mat &imgOriginalScene) {
 
 	if (blnShowSteps) {
 		std::cout << "step 3 - listOfListsOfMatchingCharsInScene.Count = " << vectorOfVectorsOfMatchingCharsInScene.size() << std::endl;			// 13 with MCLRNF1 image
-		
+
 		cv::Mat imgContours(imgOriginalScene.size(), CV_8UC3, SCALAR_BLACK);
 
-		for (auto vectorOfMatchingChars = vectorOfVectorsOfMatchingCharsInScene.begin(); vectorOfMatchingChars != vectorOfVectorsOfMatchingCharsInScene.end(); vectorOfMatchingChars++) {
+		for (auto &vectorOfMatchingChars : vectorOfVectorsOfMatchingCharsInScene) {
 			int intRandomBlue = rng.uniform(0, 256);
 			int intRandomGreen = rng.uniform(0, 256);
 			int intRandomRed = rng.uniform(0, 256);
 
 			std::vector<std::vector<cv::Point> > contours;
 
-			for (auto matchingChar = vectorOfMatchingChars->begin(); matchingChar != vectorOfMatchingChars->end(); matchingChar++) {
-				contours.push_back(matchingChar->contour);
+			for (auto &matchingChar : vectorOfMatchingChars) {
+				contours.push_back(matchingChar.contour);
 			}
 			cv::drawContours(imgContours, contours, -1, cv::Scalar((double)intRandomBlue, (double)intRandomGreen, (double)intRandomRed));
 		}
 		cv::imshow("3", imgContours);
 	}
 
-	for (auto vectorOfMatchingChars = vectorOfVectorsOfMatchingCharsInScene.begin(); vectorOfMatchingChars != vectorOfVectorsOfMatchingCharsInScene.end(); vectorOfMatchingChars++) {
-		PossiblePlate possiblePlate = extractPlate(imgOriginalScene, *vectorOfMatchingChars);
+	for (auto &vectorOfMatchingChars : vectorOfVectorsOfMatchingCharsInScene) {
+		PossiblePlate possiblePlate = extractPlate(imgOriginalScene, vectorOfMatchingChars);
 
 		if (possiblePlate.imgPlate.empty() == false) {
 			vectorOfPossiblePlates.push_back(possiblePlate);
@@ -161,8 +161,8 @@ PossiblePlate extractPlate(cv::Mat &imgOriginal, std::vector<PossibleChar> &vect
 
 	double intTotalOfCharHeights = 0;
 
-	for (auto matchingChar = vectorOfMatchingChars.begin(); matchingChar != vectorOfMatchingChars.end(); matchingChar++) {
-		intTotalOfCharHeights = intTotalOfCharHeights + matchingChar->boundingRect.height;
+	for (auto &matchingChar : vectorOfMatchingChars) {
+		intTotalOfCharHeights = intTotalOfCharHeights + matchingChar.boundingRect.height;
 	}
 
 	double dblAverageCharHeight = (double)intTotalOfCharHeights / vectorOfMatchingChars.size();
@@ -191,7 +191,6 @@ PossiblePlate extractPlate(cv::Mat &imgOriginal, std::vector<PossibleChar> &vect
 
 	return(possiblePlate);
 }
-
 
 
 

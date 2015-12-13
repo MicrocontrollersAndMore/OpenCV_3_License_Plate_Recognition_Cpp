@@ -17,8 +17,8 @@ bool blnShowSteps = false;
 const cv::Scalar SCALAR_YELLOW = cv::Scalar(0.0, 255.0, 255.0);
 
 // function prototypes ////////////////////////////////////////////////////////////////////////////
-void drawRedRectangleAroundPlate(cv::Mat &imgOriginalScene, PossiblePlate licPlate);
-void writeLicensePlateCharsOnImage(cv::Mat imgOriginalScene, PossiblePlate licPlate);
+void drawRedRectangleAroundPlate(cv::Mat &imgOriginalScene, PossiblePlate &licPlate);
+void writeLicensePlateCharsOnImage(cv::Mat &imgOriginalScene, PossiblePlate &licPlate);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 int main() {
@@ -82,7 +82,7 @@ int main() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void drawRedRectangleAroundPlate(cv::Mat &imgOriginalScene, PossiblePlate licPlate) {
+void drawRedRectangleAroundPlate(cv::Mat &imgOriginalScene, PossiblePlate &licPlate) {
 	cv::Point2f p2fRectPoints[4];
 
 	licPlate.rrLocationOfPlateInScene.points(p2fRectPoints);
@@ -93,7 +93,7 @@ void drawRedRectangleAroundPlate(cv::Mat &imgOriginalScene, PossiblePlate licPla
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void writeLicensePlateCharsOnImage(cv::Mat imgOriginalScene, PossiblePlate licPlate) {
+void writeLicensePlateCharsOnImage(cv::Mat &imgOriginalScene, PossiblePlate &licPlate) {
 	cv::Point ptCenterOfTextArea;
 	cv::Point ptLowerLeftTextOrigin;
 

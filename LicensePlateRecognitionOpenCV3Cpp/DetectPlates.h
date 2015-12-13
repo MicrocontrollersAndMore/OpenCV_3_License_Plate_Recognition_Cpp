@@ -30,4 +30,3 @@ PossiblePlate extractPlate(cv::Mat &imgOriginal, std::vector<PossibleChar> &vect
 
 
 # endif	// DETECT_PLATES_H
-
