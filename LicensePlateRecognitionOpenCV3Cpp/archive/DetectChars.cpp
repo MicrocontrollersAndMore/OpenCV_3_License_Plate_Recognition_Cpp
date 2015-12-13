@@ -53,7 +53,7 @@ bool loadKNNDataAndTrainKNN(void) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vectorOfPossiblePlates) {
+std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> vectorOfPossiblePlates) {
 	int intPlateCounter = 0;				// this is only for showing steps
 	cv::Mat imgContours;
 	cv::RNG rng;
@@ -63,30 +63,29 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
 	}
 			// at this point we can be sure vector of possible plates has at least one plate
 
-	for (auto &possiblePlate : vectorOfPossiblePlates) {
-	//for (auto possiblePlate = vectorOfPossiblePlates.begin(); possiblePlate != vectorOfPossiblePlates.end(); possiblePlate++) {
-		preprocess(possiblePlate.imgPlate, possiblePlate.imgGrayscale, possiblePlate.imgThresh);
+	for (auto possiblePlate = vectorOfPossiblePlates.begin(); possiblePlate != vectorOfPossiblePlates.end(); possiblePlate++) {
+		preprocess(possiblePlate->imgPlate, possiblePlate->imgGrayscale, possiblePlate->imgThresh);
 
 		if (blnShowSteps) {
-			cv::imshow("5a", possiblePlate.imgPlate);
-			cv::imshow("5b", possiblePlate.imgGrayscale);
-			cv::imshow("5c", possiblePlate.imgThresh);
+			cv::imshow("5a", possiblePlate->imgPlate);
+			cv::imshow("5b", possiblePlate->imgGrayscale);
+			cv::imshow("5c", possiblePlate->imgThresh);
 		}
 
 					// increase size of plate image for easier viewing and char detection
-		cv::resize(possiblePlate.imgThresh, possiblePlate.imgThresh, cv::Size(), 1.6, 1.6);
+		cv::resize(possiblePlate->imgThresh, possiblePlate->imgThresh, cv::Size(), 1.6, 1.6);
 
 					// threshold image to only black or white (eliminate grayscale)
-		cv::threshold(possiblePlate.imgThresh, possiblePlate.imgThresh, 0.0, 255.0, CV_THRESH_BINARY | CV_THRESH_OTSU);
+		cv::threshold(possiblePlate->imgThresh, possiblePlate->imgThresh, 0.0, 255.0, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
 		if (blnShowSteps) {
-			cv::imshow("5d", possiblePlate.imgThresh);
+			cv::imshow("5d", possiblePlate->imgThresh);
 		}
 
-		std::vector<PossibleChar> vectorOfPossibleCharsInPlate = findPossibleCharsInPlate(possiblePlate.imgGrayscale, possiblePlate.imgThresh);
+		std::vector<PossibleChar> vectorOfPossibleCharsInPlate = findPossibleCharsInPlate(possiblePlate->imgGrayscale, possiblePlate->imgThresh);
 
 		if (blnShowSteps) {
-			imgContours = cv::Mat(possiblePlate.imgThresh.size(), CV_8UC3, SCALAR_BLACK);
+			imgContours = cv::Mat(possiblePlate->imgThresh.size(), CV_8UC3, SCALAR_BLACK);
 			std::vector<std::vector<cv::Point> > contours;
 
 			for (auto possibleChar = vectorOfPossibleCharsInPlate.begin(); possibleChar != vectorOfPossibleCharsInPlate.end(); possibleChar++) {
@@ -101,7 +100,7 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
 		std::vector<std::vector<PossibleChar> > vectorOfVectorsOfMatchingCharsInPlate = findVectorOfVectorsOfMatchingChars(vectorOfPossibleCharsInPlate);
 
 		if (blnShowSteps) {
-			imgContours = cv::Mat(possiblePlate.imgThresh.size(), CV_8UC3, SCALAR_BLACK);
+			imgContours = cv::Mat(possiblePlate->imgThresh.size(), CV_8UC3, SCALAR_BLACK);
 
 			std::vector<std::vector<cv::Point> > contours;
 
@@ -127,7 +126,7 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
 				cv::destroyWindow("10");
 				cv::waitKey(0);
 			}
-			possiblePlate.strChars = "";
+			possiblePlate->strChars = "";
 			continue;						// go back to top of for loop
 		}
 
@@ -137,7 +136,7 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
 		}
 
 		if (blnShowSteps) {
-			cv::Mat imgContours(possiblePlate.imgThresh.size(), CV_8UC3, SCALAR_BLACK);
+			cv::Mat imgContours(possiblePlate->imgThresh.size(), CV_8UC3, SCALAR_BLACK);
 
 			for (auto vectorOfMatchingChars = vectorOfVectorsOfMatchingCharsInPlate.begin(); vectorOfMatchingChars != vectorOfVectorsOfMatchingCharsInPlate.end(); vectorOfMatchingChars++) {cv::RNG rng;
 				int intRandomBlue = rng.uniform(0, 256);
@@ -168,7 +167,7 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
 		std::vector<PossibleChar> longestVectorOfMatchingCharsInPlate = vectorOfVectorsOfMatchingCharsInPlate[intIndexOfLongestListOfChars];
 
 		if (blnShowSteps) {
-			cv::Mat imgContours(possiblePlate.imgThresh.size(), CV_8UC3, SCALAR_BLACK);
+			cv::Mat imgContours(possiblePlate->imgThresh.size(), CV_8UC3, SCALAR_BLACK);
 
 			std::vector<std::vector<cv::Point> > contours;
 
@@ -180,10 +179,10 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
 			cv::imshow("9", imgContours);
 		}
 
-		possiblePlate.strChars = recognizeCharsInPlate(possiblePlate.imgThresh, longestVectorOfMatchingCharsInPlate);
+		possiblePlate->strChars = recognizeCharsInPlate(possiblePlate->imgThresh, longestVectorOfMatchingCharsInPlate);
 
 		if (blnShowSteps) {
-			std::cout << "chars found in plate number " << intPlateCounter << " = " << possiblePlate.strChars << ", click on any image and press a key to continue . . ." << std::endl;
+			std::cout << "chars found in plate number " << intPlateCounter << " = " << possiblePlate->strChars << ", click on any image and press a key to continue . . ." << std::endl;
 			intPlateCounter++;
 			cv::waitKey(0);
 		}
@@ -198,7 +197,7 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-std::vector<PossibleChar> findPossibleCharsInPlate(cv::Mat &imgGrayscale, cv::Mat &imgThresh) {
+std::vector<PossibleChar> findPossibleCharsInPlate(cv::Mat imgGrayscale, cv::Mat imgThresh) {
 	std::vector<PossibleChar> vectorOfPossibleChars;							// this will be the return value
 
 	cv::Mat imgThreshCopy;
@@ -221,7 +220,7 @@ std::vector<PossibleChar> findPossibleCharsInPlate(cv::Mat &imgGrayscale, cv::Ma
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-bool checkIfPossibleChar(PossibleChar &possibleChar) {
+bool checkIfPossibleChar(PossibleChar possibleChar) {
 	if (possibleChar.boundingRect.area() > MIN_PIXEL_AREA &&
 		possibleChar.boundingRect.width > MIN_PIXEL_WIDTH && possibleChar.boundingRect.height > MIN_PIXEL_HEIGHT &&
 		MIN_ASPECT_RATIO < possibleChar.dblAspectRatio && possibleChar.dblAspectRatio < MAX_ASPECT_RATIO) {
@@ -233,14 +232,14 @@ bool checkIfPossibleChar(PossibleChar &possibleChar) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const std::vector<PossibleChar> &vectorOfPossibleChars) {
+std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(std::vector<PossibleChar> vectorOfPossibleChars) {
 	std::vector<std::vector<PossibleChar> > vectorOfVectorOfMatchingChars;				// this will be the return value
 
-	for (auto &possibleChar : vectorOfPossibleChars) {
+	for (auto possibleChar = vectorOfPossibleChars.begin(); possibleChar != vectorOfPossibleChars.end(); possibleChar++) {
 
-		std::vector<PossibleChar> vectorOfMatchingChars = findVectorOfMatchingChars(possibleChar, vectorOfPossibleChars);		// !!!
+		std::vector<PossibleChar> vectorOfMatchingChars = findVectorOfMatchingChars(*possibleChar, vectorOfPossibleChars);
 
-		vectorOfMatchingChars.push_back(possibleChar);
+		vectorOfMatchingChars.push_back(*possibleChar);
 
 		if (vectorOfMatchingChars.size() < MIN_NUMBER_OF_MATCHING_CHARS) {
 			continue;
@@ -250,9 +249,10 @@ std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const
 
 		std::vector<PossibleChar> vectorOfPossibleCharsWithCurrentMatchesRemoved;
 
-		for (auto possChar : vectorOfPossibleChars) {
-			if (std::find(vectorOfMatchingChars.begin(), vectorOfMatchingChars.end(), possChar) == vectorOfMatchingChars.end()) {
-				vectorOfPossibleCharsWithCurrentMatchesRemoved.push_back(possChar);
+		for (auto possChar = vectorOfPossibleChars.begin(); possChar != vectorOfPossibleChars.end(); possChar++) {
+
+			if (std::find(vectorOfMatchingChars.begin(), vectorOfMatchingChars.end(), *possChar) == vectorOfMatchingChars.end()) {
+				vectorOfPossibleCharsWithCurrentMatchesRemoved.push_back(*possChar);
 			}
 		}
 
@@ -263,7 +263,6 @@ std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const
 		for (auto recursiveVectorOfMatchingChars = recursiveVectorOfVectorOfMatchingChars.begin(); recursiveVectorOfMatchingChars != recursiveVectorOfVectorOfMatchingChars.end(); recursiveVectorOfMatchingChars++){
 			vectorOfVectorOfMatchingChars.push_back(*recursiveVectorOfMatchingChars);
 		}
-
 		break;		// exit for
 	}
 
@@ -271,26 +270,26 @@ std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-std::vector<PossibleChar> findVectorOfMatchingChars(const PossibleChar &possibleChar, const std::vector<PossibleChar> &vectorOfChars) {
+std::vector<PossibleChar> findVectorOfMatchingChars(PossibleChar possibleChar, std::vector<PossibleChar> vectorOfChars) {
 	std::vector<PossibleChar> vectorOfMatchingChars;				// this will be the return value
 
-	for (auto possibleMatchingChar : vectorOfChars) {
-		if (possibleMatchingChar == possibleChar) {
+	for (auto possibleMatchingChar = vectorOfChars.begin(); possibleMatchingChar != vectorOfChars.end(); possibleMatchingChar++) {
+		if (*possibleMatchingChar == possibleChar) {
 			continue;
 		}
 
-		double dblDistanceBetweenChars = distanceBetweenChars(possibleChar, possibleMatchingChar);
-		double dblAngleBetweenChars = angleBetweenChars(possibleChar, possibleMatchingChar);
-		double dblChangeInArea = (double)abs(possibleMatchingChar.boundingRect.area() - possibleChar.boundingRect.area()) / (double)possibleChar.boundingRect.area();
-		double dblChangeInWidth = (double)abs(possibleMatchingChar.boundingRect.width - possibleChar.boundingRect.width) / (double)possibleChar.boundingRect.width;
-		double dblChangeInHeight = (double)abs(possibleMatchingChar.boundingRect.height - possibleChar.boundingRect.height) / (double)possibleChar.boundingRect.height;
+		double dblDistanceBetweenChars = distanceBetweenChars(possibleChar, *possibleMatchingChar);
+		double dblAngleBetweenChars = angleBetweenChars(possibleChar, *possibleMatchingChar);
+		double dblChangeInArea = (double)abs(possibleMatchingChar->boundingRect.area() - possibleChar.boundingRect.area()) / (double)possibleChar.boundingRect.area();
+		double dblChangeInWidth = (double)abs(possibleMatchingChar->boundingRect.width - possibleChar.boundingRect.width) / (double)possibleChar.boundingRect.width;
+		double dblChangeInHeight = (double)abs(possibleMatchingChar->boundingRect.height - possibleChar.boundingRect.height) / (double)possibleChar.boundingRect.height;
 
 		if (dblDistanceBetweenChars < (possibleChar.dblDiagonalSize * MAX_DIAG_SIZE_MULTIPLE_AWAY) &&
 			dblAngleBetweenChars < MAX_ANGLE_BETWEEN_CHARS &&
 			dblChangeInArea < MAX_CHANGE_IN_AREA &&
 			dblChangeInWidth < MAX_CHANGE_IN_WIDTH &&
 			dblChangeInHeight < MAX_CHANGE_IN_HEIGHT) {
-			vectorOfMatchingChars.push_back(possibleMatchingChar);
+			vectorOfMatchingChars.push_back(*possibleMatchingChar);
 		}
 	}
 
@@ -298,7 +297,7 @@ std::vector<PossibleChar> findVectorOfMatchingChars(const PossibleChar &possible
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-double distanceBetweenChars(const PossibleChar &firstChar, const PossibleChar &secondChar) {
+double distanceBetweenChars(PossibleChar firstChar, PossibleChar secondChar) {
 	int intX = abs(firstChar.intCenterX - secondChar.intCenterX);
 	int intY = abs(firstChar.intCenterY - secondChar.intCenterY);
 
@@ -306,7 +305,7 @@ double distanceBetweenChars(const PossibleChar &firstChar, const PossibleChar &s
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-double angleBetweenChars(const PossibleChar &firstChar, const PossibleChar &secondChar) {
+double angleBetweenChars(PossibleChar firstChar, PossibleChar secondChar) {
 	double dblAdj = abs(firstChar.intCenterX - secondChar.intCenterX);
 	double dblOpp = abs(firstChar.intCenterY - secondChar.intCenterY);
 
@@ -318,7 +317,7 @@ double angleBetweenChars(const PossibleChar &firstChar, const PossibleChar &seco
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-std::vector<PossibleChar> removeInnerOverlappingChars(std::vector<PossibleChar> &vectorOfMatchingChars) {
+std::vector<PossibleChar> removeInnerOverlappingChars(std::vector<PossibleChar> vectorOfMatchingChars) {
 	std::vector<PossibleChar> vectorOfMatchingCharsWithInnerCharRemoved(vectorOfMatchingChars);
 
 	for (auto currentChar = vectorOfMatchingChars.begin(); currentChar != vectorOfMatchingChars.end(); currentChar++) {
@@ -345,7 +344,7 @@ std::vector<PossibleChar> removeInnerOverlappingChars(std::vector<PossibleChar> 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-std::string recognizeCharsInPlate(cv::Mat &imgThresh, std::vector<PossibleChar> &vectorOfMatchingChars) {
+std::string recognizeCharsInPlate(cv::Mat imgThresh, std::vector<PossibleChar> vectorOfMatchingChars) {
 	std::string strChars;				// this will be the return value, the chars in the lic plate
 
 	cv::Mat imgThreshColor;

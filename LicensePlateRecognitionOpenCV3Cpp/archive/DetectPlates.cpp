@@ -7,7 +7,7 @@
 #include "DetectPlates.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-std::vector<PossiblePlate> detectPlatesInScene(cv::Mat &imgOriginalScene) {
+std::vector<PossiblePlate> detectPlatesInScene(cv::Mat imgOriginalScene) {
 	std::vector<PossiblePlate> vectorOfPossiblePlates;			// this will be the return value
 
 	cv::Mat imgGrayscaleScene;
@@ -50,7 +50,7 @@ std::vector<PossiblePlate> detectPlatesInScene(cv::Mat &imgOriginalScene) {
 
 	int64 endTickCount = cv::getTickCount();				// debug !!!!!!!!!!!!!!!!!!
 
-	std::cout << "function took " << (cv::getTickCount() - begTickCount) / cv::getTickFrequency() << " seconds" << std::endl << std::endl;		// debug !!!!!!!!!!!!!!!!!!
+	std::cout << "function took " << (endTickCount - begTickCount) / cv::getTickFrequency() << " seconds" << std::endl << std::endl;		// debug !!!!!!!!!!!!!!!!!!
 
 	if (blnShowSteps) {
 		std::cout << "step 3 - listOfListsOfMatchingCharsInScene.Count = " << vectorOfVectorsOfMatchingCharsInScene.size() << std::endl;			// 13 with MCLRNF1 image
@@ -108,7 +108,7 @@ std::vector<PossiblePlate> detectPlatesInScene(cv::Mat &imgOriginalScene) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-std::vector<PossibleChar> findPossibleCharsInScene(cv::Mat &imgThresh) {
+std::vector<PossibleChar> findPossibleCharsInScene(cv::Mat imgThresh) {
 	std::vector<PossibleChar> vectorOfPossibleChars;			// this will be the return value
 
 	cv::Mat imgContours(imgThresh.size(), CV_8UC3, SCALAR_BLACK);
@@ -145,7 +145,7 @@ std::vector<PossibleChar> findPossibleCharsInScene(cv::Mat &imgThresh) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-PossiblePlate extractPlate(cv::Mat &imgOriginal, std::vector<PossibleChar> &vectorOfMatchingChars) {
+PossiblePlate extractPlate(cv::Mat imgOriginal, std::vector<PossibleChar> vectorOfMatchingChars) {
 	PossiblePlate possiblePlate;			// this will be the return value
 
 			// sort chars from left to right based on x position
