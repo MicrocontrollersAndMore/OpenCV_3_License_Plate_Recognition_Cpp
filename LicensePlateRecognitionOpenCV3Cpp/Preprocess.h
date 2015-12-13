@@ -14,11 +14,11 @@ const int ADAPTIVE_THRESH_WEIGHT = 9;
 
 // function prototypes ////////////////////////////////////////////////////////////////////////////
 
-void preprocess(cv::Mat imgOriginal, cv::Mat &imgGrayscale, cv::Mat &imgThresh);
+void preprocess(cv::Mat &imgOriginal, cv::Mat &imgGrayscale, cv::Mat &imgThresh);
 
-cv::Mat extractValue(cv::Mat imgOriginal);
+cv::Mat extractValue(cv::Mat &imgOriginal);
 
-cv::Mat maximizeContrast(cv::Mat imgGrayscale);
+cv::Mat maximizeContrast(cv::Mat &imgGrayscale);
 
 #endif	// PREPROCESS_H
 

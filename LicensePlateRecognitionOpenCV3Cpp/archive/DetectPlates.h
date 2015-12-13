@@ -22,12 +22,11 @@ const cv::Scalar SCALAR_RED = cv::Scalar(0.0, 0.0, 255.0);
 extern bool blnShowSteps;
 
 // function prototypes ////////////////////////////////////////////////////////////////////////////
-std::vector<PossiblePlate> detectPlatesInScene(cv::Mat imgOriginalScene);
+std::vector<PossiblePlate> detectPlatesInScene(cv::Mat &imgOriginalScene);
 
-std::vector<PossibleChar> findPossibleCharsInScene(cv::Mat imgThresh);
+std::vector<PossibleChar> findPossibleCharsInScene(cv::Mat &imgThresh);
 
-PossiblePlate extractPlate(cv::Mat imgOriginal, std::vector<PossibleChar> vectorOfMatchingChars);
+PossiblePlate extractPlate(cv::Mat &imgOriginal, std::vector<PossibleChar> &vectorOfMatchingChars);
 
 
 # endif	// DETECT_PLATES_H
-

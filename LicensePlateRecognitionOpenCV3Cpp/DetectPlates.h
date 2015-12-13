@@ -7,6 +7,7 @@
 #include<opencv2/highgui/highgui.hpp>
 #include<opencv2/imgproc/imgproc.hpp>
 
+#include "Main.h"
 #include "PossiblePlate.h"
 #include "PossibleChar.h"
 #include "Preprocess.h"
@@ -15,11 +16,6 @@
 // global constants ///////////////////////////////////////////////////////////////////////////////
 const double PLATE_WIDTH_PADDING_FACTOR = 1.3;
 const double PLATE_HEIGHT_PADDING_FACTOR = 1.5;
-
-const cv::Scalar SCALAR_RED = cv::Scalar(0.0, 0.0, 255.0);
-
-// external global variables //////////////////////////////////////////////////////////////////////
-extern bool blnShowSteps;
 
 // function prototypes ////////////////////////////////////////////////////////////////////////////
 std::vector<PossiblePlate> detectPlatesInScene(cv::Mat &imgOriginalScene);
@@ -30,3 +26,4 @@ PossiblePlate extractPlate(cv::Mat &imgOriginal, std::vector<PossibleChar> &vect
 
 
 # endif	// DETECT_PLATES_H
+

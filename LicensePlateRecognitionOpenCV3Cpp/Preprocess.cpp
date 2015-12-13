@@ -1,13 +1,9 @@
 // Preprocess.cpp
 
-#include<opencv2/core/core.hpp>
-#include<opencv2/highgui/highgui.hpp>
-#include<opencv2/imgproc/imgproc.hpp>
-
 #include "Preprocess.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void preprocess(cv::Mat imgOriginal, cv::Mat &imgGrayscale, cv::Mat &imgThresh) {
+void preprocess(cv::Mat &imgOriginal, cv::Mat &imgGrayscale, cv::Mat &imgThresh) {
 	imgGrayscale = extractValue(imgOriginal);
 
 	cv::Mat imgMaxContrastGrayscale = maximizeContrast(imgGrayscale);
@@ -20,7 +16,7 @@ void preprocess(cv::Mat imgOriginal, cv::Mat &imgGrayscale, cv::Mat &imgThresh) 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-cv::Mat extractValue(cv::Mat imgOriginal) {
+cv::Mat extractValue(cv::Mat &imgOriginal) {
 	cv::Mat imgHSV;
 	std::vector<cv::Mat> vectorOfHSVImages;
 	cv::Mat imgValue;
@@ -35,7 +31,7 @@ cv::Mat extractValue(cv::Mat imgOriginal) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-cv::Mat maximizeContrast(cv::Mat imgGrayscale) {
+cv::Mat maximizeContrast(cv::Mat &imgGrayscale) {
 	cv::Mat imgTopHat;
 	cv::Mat imgBlackHat;
 	cv::Mat imgGrayscalePlusTopHat;

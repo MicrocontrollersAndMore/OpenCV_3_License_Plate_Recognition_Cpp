@@ -53,24 +53,23 @@ extern cv::Ptr<cv::ml::KNearest>  kNearest;
 
 bool loadKNNDataAndTrainKNN(void);
 
-std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> vectorOfPossiblePlates);
+std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vectorOfPossiblePlates);
 
-std::vector<PossibleChar> findPossibleCharsInPlate(cv::Mat imgGrayscale, cv::Mat imgThresh);
+std::vector<PossibleChar> findPossibleCharsInPlate(cv::Mat &imgGrayscale, cv::Mat &imgThresh);
 
-bool checkIfPossibleChar(PossibleChar possibleChar);
+bool checkIfPossibleChar(PossibleChar &possibleChar);
 
-std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(std::vector<PossibleChar> vectorOfPossibleChars);
+std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const std::vector<PossibleChar> &vectorOfPossibleChars);
 
-std::vector<PossibleChar> findVectorOfMatchingChars(PossibleChar possibleChar, std::vector<PossibleChar> vectorOfChars);
+std::vector<PossibleChar> findVectorOfMatchingChars(const PossibleChar &possibleChar, const std::vector<PossibleChar> &vectorOfChars);
 
-double distanceBetweenChars(PossibleChar firstChar, PossibleChar secondChar);
+double distanceBetweenChars(const PossibleChar &firstChar, const PossibleChar &secondChar);
 
-double angleBetweenChars(PossibleChar firstChar, PossibleChar secondChar);
+double angleBetweenChars(const PossibleChar &firstChar, const PossibleChar &secondChar);
 
-std::vector<PossibleChar> removeInnerOverlappingChars(std::vector<PossibleChar> vectorOfMatchingChars);
+std::vector<PossibleChar> removeInnerOverlappingChars(std::vector<PossibleChar> &vectorOfMatchingChars);
 
-std::string recognizeCharsInPlate(cv::Mat imgThresh, std::vector<PossibleChar> vectorOfMatchingChars);
+std::string recognizeCharsInPlate(cv::Mat &imgThresh, std::vector<PossibleChar> &vectorOfMatchingChars);
 
 
 #endif	// DETECT_CHARS_H
-
