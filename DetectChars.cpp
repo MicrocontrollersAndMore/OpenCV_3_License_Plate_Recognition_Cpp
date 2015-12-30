@@ -232,7 +232,7 @@ bool checkIfPossibleChar(PossibleChar &possibleChar) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const std::vector<PossibleChar> &vectorOfPossibleChars) {
-	std::vector<std::vector<PossibleChar> > vectorOfVectorOfMatchingChars;				// this will be the return value
+	std::vector<std::vector<PossibleChar> > vectorOfVectorsOfMatchingChars;				// this will be the return value
 
 	for (auto &possibleChar : vectorOfPossibleChars) {
 
@@ -244,7 +244,7 @@ std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const
 			continue;
 		}
 					// if we get here, the current list passed test as a "group" or "cluster" of matching chars
-		vectorOfVectorOfMatchingChars.push_back(vectorOfMatchingChars);			// so add to our list of lists of matching chars
+		vectorOfVectorsOfMatchingChars.push_back(vectorOfMatchingChars);			// so add to our list of lists of matching chars
 
 		std::vector<PossibleChar> vectorOfPossibleCharsWithCurrentMatchesRemoved;
 
@@ -259,13 +259,13 @@ std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const
 		recursiveVectorOfVectorOfMatchingChars = findVectorOfVectorsOfMatchingChars(vectorOfPossibleCharsWithCurrentMatchesRemoved);	// recursive call !!
 
 		for (auto &recursiveVectorOfMatchingChars : recursiveVectorOfVectorOfMatchingChars) {
-			vectorOfVectorOfMatchingChars.push_back(recursiveVectorOfMatchingChars);
+			vectorOfVectorsOfMatchingChars.push_back(recursiveVectorOfMatchingChars);
 		}
 
 		break;		// exit for
 	}
 
-	return(vectorOfVectorOfMatchingChars);
+	return(vectorOfVectorsOfMatchingChars);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
