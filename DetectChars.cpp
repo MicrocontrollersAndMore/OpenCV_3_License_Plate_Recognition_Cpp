@@ -254,11 +254,11 @@ std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const
 			}
 		}
 
-		std::vector<std::vector<PossibleChar> > recursiveVectorOfVectorOfMatchingChars;
+		std::vector<std::vector<PossibleChar> > recursiveVectorOfVectorsOfMatchingChars;
 
-		recursiveVectorOfVectorOfMatchingChars = findVectorOfVectorsOfMatchingChars(vectorOfPossibleCharsWithCurrentMatchesRemoved);	// recursive call !!
+		recursiveVectorOfVectorsOfMatchingChars = findVectorOfVectorsOfMatchingChars(vectorOfPossibleCharsWithCurrentMatchesRemoved);	// recursive call !!
 
-		for (auto &recursiveVectorOfMatchingChars : recursiveVectorOfVectorOfMatchingChars) {
+		for (auto &recursiveVectorOfMatchingChars : recursiveVectorOfVectorsOfMatchingChars) {
 			vectorOfVectorsOfMatchingChars.push_back(recursiveVectorOfMatchingChars);
 		}
 
