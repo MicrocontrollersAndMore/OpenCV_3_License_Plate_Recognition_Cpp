@@ -151,18 +151,18 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
 		cv::imshow("8", imgContours);
 #endif	// SHOW_STEPS
 
-				// within each possible plate, suppose the longest list of potential matching chars is the actual list of chars
-		unsigned int intLenOfLongestListOfChars = 0;
-		unsigned int intIndexOfLongestListOfChars = 0;
+				// within each possible plate, suppose the longest vector of potential matching chars is the actual vector of chars
+		unsigned int intLenOfLongestVectorOfChars = 0;
+		unsigned int intIndexOfLongestVectorOfChars = 0;
 				// loop through all the vectors of matching chars, get the index of the one with the most chars
 		for (unsigned int i = 0; i < vectorOfVectorsOfMatchingCharsInPlate.size(); i++) {
-			if (vectorOfVectorsOfMatchingCharsInPlate[i].size() > intLenOfLongestListOfChars) {
-				intLenOfLongestListOfChars = vectorOfVectorsOfMatchingCharsInPlate[i].size();
-				intIndexOfLongestListOfChars = i;
+			if (vectorOfVectorsOfMatchingCharsInPlate[i].size() > intLenOfLongestVectorOfChars) {
+				intLenOfLongestVectorOfChars = vectorOfVectorsOfMatchingCharsInPlate[i].size();
+				intIndexOfLongestVectorOfChars = i;
 			}
 		}
 
-		std::vector<PossibleChar> longestVectorOfMatchingCharsInPlate = vectorOfVectorsOfMatchingCharsInPlate[intIndexOfLongestListOfChars];
+		std::vector<PossibleChar> longestVectorOfMatchingCharsInPlate = vectorOfVectorsOfMatchingCharsInPlate[intIndexOfLongestVectorOfChars];
 
 #ifdef SHOW_STEPS
 		imgContours = cv::Mat(possiblePlate.imgThresh.size(), CV_8UC3, SCALAR_BLACK);
@@ -243,8 +243,8 @@ std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const
 		if (vectorOfMatchingChars.size() < MIN_NUMBER_OF_MATCHING_CHARS) {
 			continue;
 		}
-					// if we get here, the current list passed test as a "group" or "cluster" of matching chars
-		vectorOfVectorsOfMatchingChars.push_back(vectorOfMatchingChars);			// so add to our list of lists of matching chars
+					// if we get here, the current vector passed test as a "group" or "cluster" of matching chars
+		vectorOfVectorsOfMatchingChars.push_back(vectorOfMatchingChars);			// so add to our vector of vectors of matching chars
 
 		std::vector<PossibleChar> vectorOfPossibleCharsWithCurrentMatchesRemoved;
 
