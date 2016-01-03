@@ -139,7 +139,6 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
         imgContours = cv::Mat(possiblePlate.imgThresh.size(), CV_8UC3, SCALAR_BLACK);
 
         for (auto &vectorOfMatchingChars : vectorOfVectorsOfMatchingCharsInPlate) {
-            cv::RNG rng;
             int intRandomBlue = rng.uniform(0, 256);
             int intRandomGreen = rng.uniform(0, 256);
             int intRandomRed = rng.uniform(0, 256);

@@ -85,3 +85,25 @@ licPlate
 
 
 
+
+
+vectorOfPossibleCharsInScene
+
+findVectorOfVectorsOfMatchingChars()
+
+vectorOfVectorsOfMatchingCharsInScene
+
+vectorOfPossiblePlates
+
+
+vectorOfPossibleCharsInPlate
+
+findVectorOfVectorsOfMatchingChars()
+
+vectorOfVectorsOfMatchingCharsInPlate
+
+vectorOfVectorsOfMatchingCharsInPlate
+
+longestVectorOfMatchingCharsInPlate
+
+vectorOfPossiblePlates
