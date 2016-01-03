@@ -1,6 +1,6 @@
 // Main.h
 
-#ifndef MY_MAIN			// used MY_MAIN for this include guard rather than MAIN just in case some compilers or environments #define MAIN already
+#ifndef MY_MAIN         // used MY_MAIN for this include guard rather than MAIN just in case some compilers or environments #define MAIN already
 #define MY_MAIN
 
 #include<opencv2/core/core.hpp>
@@ -13,7 +13,7 @@
 
 #include<iostream>
 
-//#define SHOW_STEPS			// comment or un-comment this line to show steps or not
+//#define SHOW_STEPS            // un-comment or comment this line to show steps or not
 
 // global constants ///////////////////////////////////////////////////////////////////////////////
 const cv::Scalar SCALAR_BLACK = cv::Scalar(0.0, 0.0, 0.0);

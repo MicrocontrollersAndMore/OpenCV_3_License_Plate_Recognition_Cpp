@@ -12,19 +12,19 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class PossiblePlate {
 public:
-	// member variables ///////////////////////////////////////////////////////////////////////////
-	cv::Mat imgPlate;
-	cv::Mat imgGrayscale;
-	cv::Mat imgThresh;
+    // member variables ///////////////////////////////////////////////////////////////////////////
+    cv::Mat imgPlate;
+    cv::Mat imgGrayscale;
+    cv::Mat imgThresh;
 
-	cv::RotatedRect rrLocationOfPlateInScene;
+    cv::RotatedRect rrLocationOfPlateInScene;
 
-	std::string strChars;
+    std::string strChars;
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	static bool sortDescendingByNumberOfChars(const PossiblePlate &ppLeft, const PossiblePlate &ppRight) {
-		return(ppLeft.strChars.length() > ppRight.strChars.length());
-	}
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    static bool sortDescendingByNumberOfChars(const PossiblePlate &ppLeft, const PossiblePlate &ppRight) {
+        return(ppLeft.strChars.length() > ppRight.strChars.length());
+    }
 
 };
 
