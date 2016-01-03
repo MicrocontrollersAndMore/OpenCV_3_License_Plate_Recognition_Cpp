@@ -30,7 +30,7 @@ std::vector<PossiblePlate> detectPlatesInScene(cv::Mat &imgOriginalScene) {
     std::vector<PossibleChar> vectorOfPossibleCharsInScene = findPossibleCharsInScene(imgThreshScene);
 
 #ifdef SHOW_STEPS
-    std::cout << "step 2 - listOfPossibleCharsInScene.Count = " << vectorOfPossibleCharsInScene.size() << std::endl;        // 131 with MCLRNF1 image
+    std::cout << "step 2 - vectorOfPossibleCharsInScene.Count = " << vectorOfPossibleCharsInScene.size() << std::endl;        // 131 with MCLRNF1 image
 
     imgContours = cv::Mat(imgOriginalScene.size(), CV_8UC3, SCALAR_BLACK);
     std::vector<std::vector<cv::Point> > contours;
@@ -47,7 +47,7 @@ std::vector<PossiblePlate> detectPlatesInScene(cv::Mat &imgOriginalScene) {
     std::vector<std::vector<PossibleChar> > vectorOfVectorsOfMatchingCharsInScene = findVectorOfVectorsOfMatchingChars(vectorOfPossibleCharsInScene);
 
 #ifdef SHOW_STEPS
-    std::cout << "step 3 - listOfListsOfMatchingCharsInScene.Count = " << vectorOfVectorsOfMatchingCharsInScene.size() << std::endl;        // 13 with MCLRNF1 image
+    std::cout << "step 3 - vectorOfVectorsOfMatchingCharsInScene.size() = " << vectorOfVectorsOfMatchingCharsInScene.size() << std::endl;        // 13 with MCLRNF1 image
 
     imgContours = cv::Mat(imgOriginalScene.size(), CV_8UC3, SCALAR_BLACK);
 
@@ -70,7 +70,7 @@ std::vector<PossiblePlate> detectPlatesInScene(cv::Mat &imgOriginalScene) {
         PossiblePlate possiblePlate = extractPlate(imgOriginalScene, vectorOfMatchingChars);        // attempt to extract plate
 
         if (possiblePlate.imgPlate.empty() == false) {                                              // if plate was found
-            vectorOfPossiblePlates.push_back(possiblePlate);                                        // add to list of possible plates
+            vectorOfPossiblePlates.push_back(possiblePlate);                                        // add to vector of possible plates
         }
     }
 
@@ -123,7 +123,7 @@ std::vector<PossibleChar> findPossibleCharsInScene(cv::Mat &imgThresh) {
 
         if (checkIfPossibleChar(possibleChar)) {                // if contour is a possible char, note this does not compare to other chars (yet) . . .
             intCountOfPossibleChars++;                          // increment count of possible chars
-            vectorOfPossibleChars.push_back(possibleChar);      // and add to list of possible chars
+            vectorOfPossibleChars.push_back(possibleChar);      // and add to vector of possible chars
         }
     }
 

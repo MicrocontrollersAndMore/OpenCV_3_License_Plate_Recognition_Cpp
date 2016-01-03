@@ -54,7 +54,7 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
     std::vector<std::vector<cv::Point> > contours;
     cv::RNG rng;
 
-    if (vectorOfPossiblePlates.empty()) {               // if list of possible plates is empty
+    if (vectorOfPossiblePlates.empty()) {               // if vector of possible plates is empty
         return(vectorOfPossiblePlates);                 // return
     }
             // at this point we can be sure vector of possible plates has at least one plate
@@ -96,7 +96,7 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
         cv::imshow("6", imgContours);
 #endif	// SHOW_STEPS
         
-                // given a list of all possible chars, find groups of matching chars within the plate
+                // given a vector of all possible chars, find groups of matching chars within the plate
         std::vector<std::vector<PossibleChar> > vectorOfVectorsOfMatchingCharsInPlate = findVectorOfVectorsOfMatchingChars(vectorOfPossibleCharsInPlate);
 
 #ifdef SHOW_STEPS
@@ -164,7 +164,7 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
                 intIndexOfLongestVectorOfChars = i;
             }
         }
-                // suppose that the longest list of matching chars within the plate is the actual list of chars
+                // suppose that the longest vector of matching chars within the plate is the actual vector of chars
         std::vector<PossibleChar> longestVectorOfMatchingCharsInPlate = vectorOfVectorsOfMatchingCharsInPlate[intIndexOfLongestVectorOfChars];
 
 #ifdef SHOW_STEPS
@@ -180,7 +180,7 @@ std::vector<PossiblePlate> detectCharsInPlates(std::vector<PossiblePlate> &vecto
         cv::imshow("9", imgContours);
 #endif	// SHOW_STEPS
 
-                // perform char recognition on the longest list of matching chars in the plate
+                // perform char recognition on the longest vector of matching chars in the plate
         possiblePlate.strChars = recognizeCharsInPlate(possiblePlate.imgThresh, longestVectorOfMatchingCharsInPlate);
 
 #ifdef SHOW_STEPS
@@ -215,7 +215,7 @@ std::vector<PossibleChar> findPossibleCharsInPlate(cv::Mat &imgGrayscale, cv::Ma
         PossibleChar possibleChar(contour);
 
         if (checkIfPossibleChar(possibleChar)) {                // if contour is a possible char, note this does not compare to other chars (yet) . . .
-            vectorOfPossibleChars.push_back(possibleChar);      // add to list of possible chars
+            vectorOfPossibleChars.push_back(possibleChar);      // add to vector of possible chars
         }
     }
 
@@ -237,28 +237,28 @@ bool checkIfPossibleChar(PossibleChar &possibleChar) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const std::vector<PossibleChar> &vectorOfPossibleChars) {
-            // with this function, we start off with all the possible chars in one big list
-            // the purpose of this function is to re-arrange the one big list of chars into a list of lists of matching chars,
+            // with this function, we start off with all the possible chars in one big vector
+            // the purpose of this function is to re-arrange the one big vector of chars into a vector of vectors of matching chars,
             // note that chars that are not found to be in a group of matches do not need to be considered further
     std::vector<std::vector<PossibleChar> > vectorOfVectorsOfMatchingChars;             // this will be the return value
 
-    for (auto &possibleChar : vectorOfPossibleChars) {                  // for each possible char in the one big list of chars
+    for (auto &possibleChar : vectorOfPossibleChars) {                  // for each possible char in the one big vector of chars
 
-                    // find all chars in the big list that match the current char
+                    // find all chars in the big vector that match the current char
         std::vector<PossibleChar> vectorOfMatchingChars = findVectorOfMatchingChars(possibleChar, vectorOfPossibleChars);
 
-        vectorOfMatchingChars.push_back(possibleChar);          // also add the current char to current possible list of matching chars
+        vectorOfMatchingChars.push_back(possibleChar);          // also add the current char to current possible vector of matching chars
 
-                    // if current possible list of matching chars is not long enough to constitute a possible plate
+                    // if current possible vector of matching chars is not long enough to constitute a possible plate
         if (vectorOfMatchingChars.size() < MIN_NUMBER_OF_MATCHING_CHARS) {
             continue;                       // jump back to the top of the for loop and try again with next char, note that it's not necessary
-                                            // to save the list in any way since it did not have enough chars to be a possible plate
+                                            // to save the vector in any way since it did not have enough chars to be a possible plate
         }
                     // if we get here, the current vector passed test as a "group" or "cluster" of matching chars
         vectorOfVectorsOfMatchingChars.push_back(vectorOfMatchingChars);            // so add to our vector of vectors of matching chars
 
-                    // remove the current list of matching chars from the big list so we don't use those same chars twice,
-                    // make sure to make a new big list for this since we don't want to change the original big list
+                    // remove the current vector of matching chars from the big vector so we don't use those same chars twice,
+                    // make sure to make a new big vector for this since we don't want to change the original big vector
         std::vector<PossibleChar> vectorOfPossibleCharsWithCurrentMatchesRemoved;
 
         for (auto &possChar : vectorOfPossibleChars) {
@@ -272,8 +272,8 @@ std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const
                     // recursive call
         recursiveVectorOfVectorsOfMatchingChars = findVectorOfVectorsOfMatchingChars(vectorOfPossibleCharsWithCurrentMatchesRemoved);	// recursive call !!
 
-        for (auto &recursiveVectorOfMatchingChars : recursiveVectorOfVectorsOfMatchingChars) {      // for each list of matching chars found by recursive call
-            vectorOfVectorsOfMatchingChars.push_back(recursiveVectorOfMatchingChars);               // add to our original list of lists of matching chars
+        for (auto &recursiveVectorOfMatchingChars : recursiveVectorOfVectorsOfMatchingChars) {      // for each vector of matching chars found by recursive call
+            vectorOfVectorsOfMatchingChars.push_back(recursiveVectorOfMatchingChars);               // add to our original vector of vectors of matching chars
         }
 
         break;		// exit for loop
@@ -284,16 +284,16 @@ std::vector<std::vector<PossibleChar> > findVectorOfVectorsOfMatchingChars(const
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 std::vector<PossibleChar> findVectorOfMatchingChars(const PossibleChar &possibleChar, const std::vector<PossibleChar> &vectorOfChars) {
-            // the purpose of this function is, given a possible char and a big list of possible chars,
-            // find all chars in the big list that are a match for the single possible char, and return those matching chars as a list
+            // the purpose of this function is, given a possible char and a big vector of possible chars,
+            // find all chars in the big vector that are a match for the single possible char, and return those matching chars as a vector
     std::vector<PossibleChar> vectorOfMatchingChars;                // this will be the return value
 
-    for (auto &possibleMatchingChar : vectorOfChars) {              // for each char in big list
+    for (auto &possibleMatchingChar : vectorOfChars) {              // for each char in big vector
 		
-                // if the char we attempting to find matches for is the exact same char as the char in the big list we are currently checking
+                // if the char we attempting to find matches for is the exact same char as the char in the big vector we are currently checking
         if (possibleMatchingChar == possibleChar) {
-                                // then we should not include it in the list of matches b/c that would end up double including the current char
-            continue;           // so do not add to list of matches and jump back to top of for loop
+                                // then we should not include it in the vector of matches b/c that would end up double including the current char
+            continue;           // so do not add to vector of matches and jump back to top of for loop
         }
                 // compute stuff to see if chars are a match
         double dblDistanceBetweenChars = distanceBetweenChars(possibleChar, possibleMatchingChar);
@@ -308,7 +308,7 @@ std::vector<PossibleChar> findVectorOfMatchingChars(const PossibleChar &possible
             dblChangeInArea < MAX_CHANGE_IN_AREA &&
             dblChangeInWidth < MAX_CHANGE_IN_WIDTH &&
             dblChangeInHeight < MAX_CHANGE_IN_HEIGHT) {
-            vectorOfMatchingChars.push_back(possibleMatchingChar);      // if the chars are a match, add the current char to list of matching chars
+            vectorOfMatchingChars.push_back(possibleMatchingChar);      // if the chars are a match, add the current char to vector of matching chars
         }
     }
 
