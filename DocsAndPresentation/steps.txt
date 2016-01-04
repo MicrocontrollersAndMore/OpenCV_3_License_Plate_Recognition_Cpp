@@ -107,3 +107,8 @@ vectorOfVectorsOfMatchingCharsInPlate
 longestVectorOfMatchingCharsInPlate
 
 vectorOfPossiblePlates
+
+*loadKNNDataAndTrainKNN()
+
+
+*loadKNNDataAndTrainKNN() is actually called at the beginning of the program, it does not matter when this is called, so long as it's called before recognizeCharsInPlate()
