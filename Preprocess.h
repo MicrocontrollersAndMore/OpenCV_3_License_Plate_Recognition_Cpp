@@ -20,5 +20,6 @@ cv::Mat extractValue(cv::Mat &imgOriginal);
 
 cv::Mat maximizeContrast(cv::Mat &imgGrayscale);
 
+
 #endif	// PREPROCESS_H
 

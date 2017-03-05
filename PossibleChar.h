@@ -45,4 +45,3 @@ public:
 
 #endif  // POSSIBLE_CHAR_H
 
-

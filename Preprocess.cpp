@@ -12,7 +12,7 @@ void preprocess(cv::Mat &imgOriginal, cv::Mat &imgGrayscale, cv::Mat &imgThresh)
 
     cv::GaussianBlur(imgMaxContrastGrayscale, imgBlurred, GAUSSIAN_SMOOTH_FILTER_SIZE, 0);          // gaussian blur
 
-                // call adaptive threshold to get imgThresh
+                                                                                                    // call adaptive threshold to get imgThresh
     cv::adaptiveThreshold(imgBlurred, imgThresh, 255.0, CV_ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY_INV, ADAPTIVE_THRESH_BLOCK_SIZE, ADAPTIVE_THRESH_WEIGHT);
 }
 
@@ -48,6 +48,5 @@ cv::Mat maximizeContrast(cv::Mat &imgGrayscale) {
 
     return(imgGrayscalePlusTopHatMinusBlackHat);
 }
-
 
 

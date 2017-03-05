@@ -12,7 +12,6 @@
 #include "DetectChars.h"
 
 #include<iostream>
-#include<conio.h>           // may have to modify this line if not using Windows
 
 //#define SHOW_STEPS            // un-comment or comment this line to show steps or not
 
